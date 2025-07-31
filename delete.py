@@ -6,7 +6,24 @@ import sys
 def delete_item(item_id):
     conn = sqlite3.connect('project.db')
     cursor = conn.cursor()
-    cursor.execute("DELETE FROM item WHERE id = ?", (item_id,))
+    
+    # Fetch current count
+    cursor.execute("SELECT count FROM item WHERE id = ?", (item_id,))
+    result = cursor.fetchone()
+    
+    if not result:
+        conn.close()
+        return 0  # No item found
+
+    current_count = result[0]
+    
+    if current_count > 1:
+        # Decrement count
+        cursor.execute("UPDATE item SET count = count - 1 WHERE id = ?", (item_id,))
+    else:
+        # Delete the item if count is 1
+        cursor.execute("DELETE FROM item WHERE id = ?", (item_id,))
+    
     conn.commit()
     deleted = cursor.rowcount
     conn.close()
