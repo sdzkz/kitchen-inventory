@@ -20,7 +20,7 @@ if __name__ == "__main__":
     try:
         item_id = int(sys.argv[1])
         deleted = delete_item(item_id)
-        print(f"Deleted {deleted} item(s)" if deleted else "No item found with that ID")
+        print(f"{item_id} deleted" if deleted else "No item found with that ID")
     except ValueError:
         print("ID must be an integer")
         sys.exit(1)
