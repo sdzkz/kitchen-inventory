@@ -50,8 +50,6 @@ def search_and_display(term: str) -> list[tuple]:
 
         for row in display_rows:
             print("  ".join(row[i].ljust(col_widths[i]) for i in range(len(row))))
-    else:
-        print(f"No items found matching '{term}'")
 
     conn.close()
     return results
