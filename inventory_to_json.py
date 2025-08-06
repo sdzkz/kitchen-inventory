@@ -35,12 +35,15 @@ def main() -> None:
     inventory = fetch_inventory()
     json_blob = json.dumps(inventory, indent=2)
 
+    print()
+
     if args.print:
         print(json_blob)
     else:
         OUT_PATH.write_text(json_blob, encoding="utf-8")
         print(f"Wrote {len(inventory)} items to {OUT_PATH}", file=sys.stderr)
-
+    
+    print()
 if __name__ == "__main__":
     main()
 
