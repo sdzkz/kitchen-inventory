@@ -53,7 +53,6 @@ def edit_item(item_id):
         conn.commit()
     
     conn.close()
-    print(":)")
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
@@ -64,7 +63,7 @@ if __name__ == "__main__":
         item_id = sys.argv[1]
         conn = sqlite3.connect(DB_PATH)
         cursor = conn.cursor()
-        
+        print()
         if item_id == "0":
             cursor.execute("SELECT MAX(id) FROM item")
             max_id = cursor.fetchone()[0]
@@ -75,8 +74,8 @@ if __name__ == "__main__":
             item_id = max_id
         else:
             item_id = int(item_id)
-        
         conn.close()
         edit_item(item_id)
+        print()        
     except ValueError:
         print("Invalid ID. Must be integer or 0.")

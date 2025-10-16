@@ -34,6 +34,11 @@ def init_db():
         print("Adding 'count' column...")
         cursor.execute("ALTER TABLE item ADD COLUMN count INTEGER NOT NULL DEFAULT 1")
 
+    # Add audited column if it doesn't exist
+    if 'audited' not in columns:
+        print("Adding 'audited' column...")
+        cursor.execute("ALTER TABLE item ADD COLUMN audited BOOLEAN DEFAULT FALSE")
+
     conn.commit()
     conn.close()
     print("Database initialized.")
