@@ -14,50 +14,42 @@ def audit_inventory():
         items = cursor.fetchall()
         
         if not items:
-            print("All items have already been audited!")
+            print("All items audited!")
             return
         
-        print(f"Found {len(items)} items to audit.")
-        print("Enter new quantity for each item (press Enter to keep current, type 'exit' to quit):")
+        print(f"\n{len(items)} items to audit.")
         print("-" * 50)
         
         for item_id, name, current_count in items:
-            print(f"Item: {name}")
-            print(f"Current quantity: {current_count}")
+            print(f"({current_count}) - {name}")
             
             while True:
                 try:
-                    user_input = input("New quantity: ").strip()
+                    user_input = input(": ").strip()
                     
                     if user_input.lower() == 'exit':
-                        print("Audit aborted by user.")
                         return
                     
                     if user_input == '':
-                        # Keep current quantity
-                        print(f"Keeping quantity: {current_count}")
                         break
                     
-                    # Try to convert to integer
                     new_count = int(user_input)
                     if new_count < 0:
-                        print("Quantity cannot be negative. Please enter a valid number.")
+                        print("Quantity cannot be negative.")
                         continue
                     
-                    # Update the quantity
                     cursor.execute("UPDATE item SET count = ? WHERE id = ?", (new_count, item_id))
-                    print(f"Updated quantity to: {new_count}")
                     break
                     
                 except ValueError:
-                    print("Invalid input. Please enter a number, press Enter to keep current, or type 'exit' to quit.")
+                    print("Invalid input.")
             
             # Mark as audited regardless of whether quantity was changed
             cursor.execute("UPDATE item SET audited = TRUE WHERE id = ?", (item_id,))
             conn.commit()
             print("-" * 30)
         
-        print("Audit completed successfully!")
+        print("Audit completed!")
         
     except sqlite3.Error as e:
         print(f"Database error: {e}")
